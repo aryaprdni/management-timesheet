@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Heading, Input, InputGroup, InputLeftElement, Tab, TabList, TabPanel, TabPanels, Table, TableContainer, Tabs, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Heading, Input, InputGroup, InputLeftElement, Tab, TabList, TabPanel, TabPanels, Table, TableContainer, Tabs, Tbody, Td, Text, Th, Thead, Tr, InputRightElement } from "@chakra-ui/react";
 import { CiCirclePlus } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { IoFilterSharp } from "react-icons/io5";
@@ -20,7 +20,7 @@ const Content = () => {
 
                 <TabPanels>
                     <TabPanel>
-                        <Box bg={'white'} h={'68vh'} borderRadius={12} pb={6} pt={6}>
+                        <Box bg={'white'} h={'75vh'} borderRadius={12} pb={6} pt={6}>
                             <Flex gap={16} pl={10} pb={6}>
                                 <Box>
                                     <Text>Nama Karyawan</Text>
@@ -35,8 +35,10 @@ const Content = () => {
                             <Flex ml={10} mr={10} mt={6} gap={10} justifyContent={"space-between"}>
                                 <Flex gap={4}>
                                     <Text fontWeight={'bold'}>Daftar Kegiatan</Text>
-                                    <Button size='xs' height='32px' width='135px' color='brand.blue' textAlign={'center'}>
-                                        <CiCirclePlus fontSize="18px" fontWeight={"bold"} />
+                                    <Button size='xs' height='32px' width='145px' color='brand.blue' textAlign={'center'}>
+                                        <Text fontSize="18px" fontWeight={"bold"}>
+                                            <CiCirclePlus />
+                                        </Text>
                                         <Text ml={2}>Tambah Kegiatan</Text>
                                     </Button>
                                 </Flex>
@@ -153,21 +155,25 @@ const Content = () => {
                             </Flex>
                         </Box>
                     </TabPanel>
-                    <TabPanel>
-                        <Box bg={'white'} padding={12} maxWidth={'40%'} minHeight={'40%'} m={'0 auto'} borderRadius={10}>
+                    <TabPanel mt={'12'}>
+                        <Box bg={'white'} padding={12} maxWidth={'30%'} minHeight={'30%'} m={'0 auto'} borderRadius={10}>
                             <Text mb='8px'>Nama Karyawan</Text>
                             <Input
                                 placeholder='Nama Karyawan'
                                 size='md'
                             />
-                            <Text mb='8px' mt={6}>Rate</Text>
-                            <Input
-                                placeholder='Here is a sample placeholder'
-                                size='md'
-                            />
+                            <Text mb='8px' mt='10px'>Rate</Text>
+                            <InputGroup size='md'>
+                                <Input
+                                placeholder='Example : Rp12.000'
+                                />
+                                <InputRightElement width='4.5rem'>
+                                <Text color='gray.200'>/jam</Text>
+                                </InputRightElement>
+                            </InputGroup>
                             <Flex justifyContent={'center'} gap={5} mt={6}>
-                                <Button colorScheme='gray' color="brand.blue" maxWidth={'500px'}>Batalkan</Button>
-                                <Button colorScheme='blue'>Simpan</Button>
+                                <Button colorScheme='gray' color="brand.blue" width={'200px'}>Batalkan</Button>
+                                <Button colorScheme='blue'width={'200px'} >Simpan</Button>
                             </Flex>
                         </Box>
                     </TabPanel>
