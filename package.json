@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "date-fns": "^3.6.0",
+    "react-redux": "^9.1.2"
+  }
+}
