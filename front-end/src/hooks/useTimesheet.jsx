@@ -7,7 +7,6 @@ export function useTimesheet(setShowNotification) {
     const dispatch = useDispatch();
     const [dataTimesheet, setDataTimesheet] = useState([]);
     const [data, setData] = useState({
-        id: null,
         tanggal_mulai: "",
         tanggal_berakhir: "",
         jam_mulai: "",

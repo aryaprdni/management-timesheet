@@ -13,7 +13,8 @@ import UpdateTimesheet from './UpdateTimesheet';
 const Content = () => {
     const { handleChange, handleLogin } = useLogin();
     const user = useSelector((state) => state.auth.user);
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isFilterOpen, onOpen: onFilterOpen, onClose: onFilterClose } = useDisclosure();
+    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const [tabIndex, setTabIndex] = useState(() => {
         const savedIndex = localStorage.getItem('tabIndex');
         return savedIndex ? parseInt(savedIndex) : 0;
@@ -77,9 +78,13 @@ const Content = () => {
     const applyFilters = () => {
         const filterString = selectedFilters.join(',');
         handleFilter(filterString);
-        onClose();
+        onFilterClose();
     };
-    
+
+    const openDeleteModal = (id) => {
+        setTimesheetIdToDelete(id);
+        onDeleteOpen();
+    }
 
     return (
         <Box>
@@ -118,41 +123,41 @@ const Content = () => {
                                         </InputLeftElement>
                                         <Input type='tel' placeholder='Cari' />
                                     </InputGroup>
-                                    <Button bg={"white"} border={"0.1px solid"} borderColor={"gray.300"}>
-                                        <IoFilterSharp fontSize="30px" color="red" onClick={onOpen}/>
-                                        <Modal isOpen={isOpen} onClose={onClose}>
-                                            <ModalOverlay />
-                                            <ModalContent>
-                                                <ModalHeader>Filter</ModalHeader>
-                                                <ModalCloseButton />
-                                                <ModalBody>
-                                                    <Text mb={2}>Proyek</Text>
-                                                    <Select placeholder='Select option' onChange={handleFilterChange}>
-                                                        <option value='Aplikasi Website'>Aplikasi Website</option>
-                                                        <option value='Desain UI'>Desain UI</option>
-                                                        <option value='Asisten Virtual'>Asisten Virtual</option>
-                                                        <option value='Desain Logo'>Desain Logo</option>
-                                                        <option value='Aplikasi Timesheet'>Aplikasi Timesheet</option>
-                                                    </Select>
-                                                    <Flex mt={4} flexWrap="wrap" gap={2}>
-                                                        {selectedFilters.map((filter, index) => (
-                                                            <Button key={index} size="sm" onClick={() => handleRemoveFilter(filter)}>
-                                                                {filter} x
-                                                            </Button>
-                                                        ))}
-                                                    </Flex>
-                                                </ModalBody>
-                                                <ModalFooter>
-                                                    <Button colorScheme='white' color="red" mr={3} onClick={handleClearFilters}>
-                                                        Hapus Filter
-                                                    </Button>
-                                                    <Button colorScheme='red' onClick={applyFilters}>
-                                                        Terapkan
-                                                    </Button>
-                                                </ModalFooter>
-                                            </ModalContent>
-                                        </Modal>
+                                    <Button bg={"white"} border={"0.1px solid"} borderColor={"gray.300"} onClick={onFilterOpen}>
+                                        <IoFilterSharp fontSize="30px" color="red" />
                                     </Button>
+                                    <Modal isOpen={isFilterOpen} onClose={onFilterClose}>
+                                        <ModalOverlay />
+                                        <ModalContent>
+                                            <ModalHeader>Filter</ModalHeader>
+                                            <ModalCloseButton />
+                                            <ModalBody>
+                                                <Text mb={2}>Proyek</Text>
+                                                <Select placeholder='Select option' onChange={handleFilterChange}>
+                                                    <option value='Aplikasi Website'>Aplikasi Website</option>
+                                                    <option value='Desain UI'>Desain UI</option>
+                                                    <option value='Asisten Virtual'>Asisten Virtual</option>
+                                                    <option value='Desain Logo'>Desain Logo</option>
+                                                    <option value='Aplikasi Timesheet'>Aplikasi Timesheet</option>
+                                                </Select>
+                                                <Flex mt={4} flexWrap="wrap" gap={2}>
+                                                    {selectedFilters.map((filter, index) => (
+                                                        <Button key={index} size="sm" onClick={() => handleRemoveFilter(filter)}>
+                                                            {filter} x
+                                                        </Button>
+                                                    ))}
+                                                </Flex>
+                                            </ModalBody>
+                                            <ModalFooter>
+                                                <Button colorScheme='white' color="red" mr={3} onClick={handleClearFilters}>
+                                                    Hapus Filter
+                                                </Button>
+                                                <Button colorScheme='red' onClick={applyFilters}>
+                                                    Terapkan
+                                                </Button>
+                                            </ModalFooter>
+                                        </ModalContent>
+                                    </Modal>
                                 </Flex>
                             </Flex>
 
@@ -224,15 +229,12 @@ const Content = () => {
                                                     <Td border="1px solid" borderColor="gray.200">
                                                         <Flex gap={2}>
                                                             <UpdateTimesheet timesheet={timesheet}/>
-                                                            <Button onClick={() => {
-                                                                setTimesheetIdToDelete(timesheet.id);
-                                                                onOpen(); 
-                                                            }} bg={'white'}>
+                                                            <Button onClick={() => openDeleteModal(timesheet.id)} bg={'white'}>
                                                                 <Text color={'brand.red'}><MdDeleteOutline /></Text>
                                                             </Button>
 
                                                             {/* Modal untuk konfirmasi penghapusan */}
-                                                            <Modal isOpen={isOpen && timesheetIdToDelete === timesheet.id} onClose={onClose}>
+                                                            <Modal isOpen={isDeleteOpen && timesheetIdToDelete === timesheet.id} onClose={onDeleteClose}>
                                                                 <ModalOverlay />
                                                                 <ModalContent>
                                                                     <ModalHeader>Konfirmasi Hapus</ModalHeader>
@@ -241,12 +243,12 @@ const Content = () => {
                                                                         Yakin ingin menghapus item ini?
                                                                     </ModalBody>
                                                                     <ModalFooter>
-                                                                        <Button colorScheme='blue' mr={3} onClick={onClose}>
+                                                                        <Button colorScheme='blue' mr={3} onClick={onDeleteClose}>
                                                                             Batal
                                                                         </Button>
                                                                         <Button variant='ghost' onClick={() => {
                                                                             handleDelete(timesheet.id);
-                                                                            onClose();
+                                                                            onDeleteClose();
                                                                         }}>
                                                                             Hapus
                                                                         </Button>

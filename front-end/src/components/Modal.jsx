@@ -10,10 +10,13 @@ function NotificationModal({ isOpen, onClose, modalTitle, modalBody }) {
         if (isOpen) {
             timeout = setTimeout(() => {
                 onClose();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
             }, 3000);
         }
-    
-        return () => clearTimeout(timeout); 
+
+        return () => clearTimeout(timeout);
     }, [isOpen, onClose]);
 
     return (
